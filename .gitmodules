@@ -1,0 +1,3 @@
+[submodule "themes/beautifulhugo-ropnop"]
+	path = themes/beautifulhugo-ropnop
+	url = git@github.com:ropnop/beautifulhugo.git

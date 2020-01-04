@@ -1,0 +1,126 @@
+baseurl = "https://blog.ropnop.com"
+DefaultContentLanguage = "en"
+title = "ropnop blog"
+theme = "beautifulhugo-ropnop"
+metaDataFormat = "yaml"
+
+pygmentsStyle = "trac"
+pygmentsUseClasses = true
+pygmentsCodeFences = true
+pygmentsCodefencesGuessSyntax = true
+#pygmentsUseClassic = true
+#pygmentOptions = "linenos=inline"
+#disqusShortname = "XXX"
+#googleAnalytics = "XXX"
+
+[permalinks]
+  post = "/:slug"
+
+[Params]
+  homeTitle = "ropnop blog" # Set a different text for the header on the home page
+  subtitle = "A place to dump things I find interesting and think others might want to know"
+  mainSections = ["post","posts"]
+  logo = "images/ropnop.jpg" # Expecting square dimensions
+#   favicon = "img/favicon.ico"
+  dateFormat = "January 2, 2006"
+  commit = false
+  rss = true
+  comments = true
+#   readingTime = true
+#   wordCount = true
+  useHLJS = true
+  socialShare = true
+  delayDisqus = true
+  showRelatedPosts = true
+#  hideAuthor = true
+#  gcse = "012345678901234567890:abcdefghijk" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
+
+#[[Params.bigimg]]
+#  src = "img/triangle.jpg"
+#  desc = "Triangle"
+#[[Params.bigimg]]
+#  src = "img/sphere.jpg"
+#  desc = "Sphere"
+#  # position: see values of CSS background-position.
+#  position = "center top"
+#[[Params.bigimg]]
+#  src = "img/hexagon.jpg"
+#  desc = "Hexagon"
+
+[Author]
+  name = "ropnop"
+  website = "blog.ropnop.com"
+  email = "rflathers@gmail.com"
+#   facebook = "username"
+  github = "ropnop"
+#   gitlab = "username"
+#   bitbucket = "username"
+  twitter = "ropnop"
+  
+
+[[menu.main]]
+    name = "Blog"
+    url = ""
+    weight = 1
+
+[[menu.main]]
+    name = "About"
+    url = "page/about/"
+    weight = 3
+
+[[menu.main]]
+    identifier = "samples"
+    name = "Samples"
+    weight = 2
+
+[[menu.main]]
+    parent = "samples"
+    name = "Big Image Sample"
+    url = "post/2017-03-07-bigimg-sample"
+    weight = 1
+
+[[menu.main]]
+    parent = "samples"
+    name = "Math Sample"
+    url = "post/2017-03-05-math-sample"
+    weight = 2
+
+[[menu.main]]
+    parent = "samples"
+    name = "Code Sample"
+    url = "post/2016-03-08-code-sample"
+    weight = 3
+
+[[menu.main]]
+    name = "Tags"
+    url = "tags"
+    weight = 3
+
+# title = "ropnop blog"
+# baseURL = "https://blog.ropnop.com"
+# languageCode = "en-us"
+# theme = "beautifulhugo"
+
+# MetaDataFormat =  "yaml"
+# DefaultContentLanguage = "en"
+# SectionPagesMenu = "main"
+# Paginate = 3 # this is set low for demonstrating with dummy content. Set to a higher number
+# googleAnalytics = ""
+# enableRobotsTXT = true
+
+# [sitemap]
+#   changefreq = "monthly"
+#   priority = 0.5
+#   filename = "sitemap.xml"
+
+
+
+# [params]
+#   favicon = ""
+#   description = "A place to dump things I find interesting and think others might want to know"
+#   twitter = "https://twitter.com/ropnop"
+#   github = "https://github.com/ropnop"
+#   # choose a background color from any on this page: http://tachyons.io/docs/themes/skins/ and preface it with "bg-"
+#   background_color_class = "bg-dark-gray"
+#   featured_image = "/images/gohugo-default-sample-hero-image.jpg"
+#   recent_posts_number = 2
