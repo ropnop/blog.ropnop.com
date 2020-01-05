@@ -4,9 +4,13 @@ date: 2016-04-14
 toc: true
 tags: ["android", "osx"]
 author: "ropnop"
-description: "Turns out installing Drozer on OS X is a pain. The latest versions of OS X doesn't include OpenSSL headers, which breaks dependencies. Here's my workaround."
-featured_image: "/images/2016/04/drozer.png"
-images: ["/images/2016/04/drozer.png"]
+summary: "Turns out installing Drozer on OS X is a pain. The latest versions of OS X doesn't include OpenSSL headers, which breaks dependencies. Here's my workaround."
+# subtitle: "Turns out installing Drozer on OS X is a pain. The latest versions of OS X doesn't include OpenSSL headers, which breaks dependencies. Here's my workaround."
+# featured_image: "/images/2016/04/drozer.png"
+# image: "/images/2016/04/drozer.png"
+
+# images: ["/images/2016/04/drozer.png"]
+
 ---
 
 ## Background

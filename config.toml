@@ -4,12 +4,12 @@ title = "ropnop blog"
 theme = "beautifulhugo-ropnop"
 metaDataFormat = "yaml"
 
-pygmentsStyle = "trac"
+pygmentsStyle = "monokai"
 pygmentsUseClasses = true
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
 #pygmentsUseClassic = true
-#pygmentOptions = "linenos=inline"
+pygmentOptions = "linenos=inline"
 #disqusShortname = "XXX"
 #googleAnalytics = "XXX"
 
@@ -26,13 +26,13 @@ pygmentsCodefencesGuessSyntax = true
   commit = false
   rss = true
   comments = true
-#   readingTime = true
-#   wordCount = true
+  readingTime = true
+  wordCount = true
   useHLJS = true
   socialShare = true
   delayDisqus = true
   showRelatedPosts = true
-#  hideAuthor = true
+  hideAuthor = false
 #  gcse = "012345678901234567890:abcdefghijk" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
 
 #[[Params.bigimg]]
@@ -51,10 +51,7 @@ pygmentsCodefencesGuessSyntax = true
   name = "ropnop"
   website = "blog.ropnop.com"
   email = "rflathers@gmail.com"
-#   facebook = "username"
   github = "ropnop"
-#   gitlab = "username"
-#   bitbucket = "username"
   twitter = "ropnop"
   
 
@@ -95,32 +92,3 @@ pygmentsCodefencesGuessSyntax = true
     name = "Tags"
     url = "tags"
     weight = 3
-
-# title = "ropnop blog"
-# baseURL = "https://blog.ropnop.com"
-# languageCode = "en-us"
-# theme = "beautifulhugo"
-
-# MetaDataFormat =  "yaml"
-# DefaultContentLanguage = "en"
-# SectionPagesMenu = "main"
-# Paginate = 3 # this is set low for demonstrating with dummy content. Set to a higher number
-# googleAnalytics = ""
-# enableRobotsTXT = true
-
-# [sitemap]
-#   changefreq = "monthly"
-#   priority = 0.5
-#   filename = "sitemap.xml"
-
-
-
-# [params]
-#   favicon = ""
-#   description = "A place to dump things I find interesting and think others might want to know"
-#   twitter = "https://twitter.com/ropnop"
-#   github = "https://github.com/ropnop"
-#   # choose a background color from any on this page: http://tachyons.io/docs/themes/skins/ and preface it with "bg-"
-#   background_color_class = "bg-dark-gray"
-#   featured_image = "/images/gohugo-default-sample-hero-image.jpg"
-#   recent_posts_number = 2
