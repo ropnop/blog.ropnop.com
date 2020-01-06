@@ -2,7 +2,6 @@
 title: "Using Credentials to Own Windows Boxes - Part 2 (PSExec and Services)"
 slug: "using-credentials-to-own-windows-boxes-part-2-psexec-and-services"
 author: "ropnop"
-draft: true
 date: 2016-04-20
 summary: "Pentesters use PsExec style commands all the time, and in this post I'm going to explore and manually recreate the technique using native Windows tools."
 toc: true

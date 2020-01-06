@@ -2,7 +2,6 @@
 title: "Sans Holiday Hack 2016 - Writeup"
 slug: "sans-holiday-hack-2016-writeup"
 author: "ropnop"
-draft: true
 date: 2017-01-05
 toc: true
 share_img: "/images/2017/01/game_background.png"

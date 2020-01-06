@@ -2,7 +2,6 @@
 title: "Transferring Files from Linux to Windows (post-exploitation)"
 slug: "transferring-files-from-kali-to-windows"
 author: "ropnop"
-draft: true
 date: 2016-07-01
 summary: "I often need to copy a tool or a payload from my Kali linux attack box to a compromised Windows machine. These are some of my favorite techniques."
 toc: true

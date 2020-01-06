@@ -2,7 +2,6 @@
 title: "Using Credentials to Own Windows Boxes - Part 1 (from Kali)"
 slug: "using-credentials-to-own-windows-boxes"
 author: "ropnop"
-draft: true
 date: 2016-04-16
 summary: "Du'h...if you have admin creds you can own a box. But how many different ways can you do it? Here's a blog-ified version of my notes and my favorite methods"
 toc: true

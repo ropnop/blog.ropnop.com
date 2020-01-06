@@ -2,7 +2,6 @@
 title: "Using Credentials to Own Windows Boxes - Part 3 (WMI and WinRM)"
 slug: "using-credentials-to-own-windows-boxes-part-3-wmi-and-winrm"
 author: "ropnop"
-draft: true
 date: 2016-04-27
 summary: "WMI and WinRM are two Windows administrative \"features\" that are ripe for abuse if you have credentials. In this post, I'll show how to (mis)use them..."
 toc: true

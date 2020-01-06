@@ -1,7 +1,6 @@
 ---
 title: "Practical Usage of NTLM Hashes"
 author: "ropnop"
-draft: true
 date: 2016-06-05
 summary: "I've shown all the different ways to own a Windows environment when you have a password - but having a hash is just as good! Don't bother cracking - PTH!"
 toc: true

@@ -1,7 +1,6 @@
 ---
 title: "Cracking OpenNMS Password Hashes"
 author: "ropnop"
-draft: true
 date: 2017-06-21
 summary: "After compromising an OpenNMS server, I recovered salted password hashes. I couldn't find any info online, so I reversed them and wrote a tool to crack them"
 toc: true

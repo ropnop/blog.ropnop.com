@@ -1,7 +1,6 @@
 ---
 title: "Plundering Docker Images"
 author: "ropnop"
-draft: true
 date: 2016-04-15
 summary: "On a recent pentest, we recovered credentials to a private Docker registry. Looting the contained images yielded us source code and admin ssh keys."
 toc: true

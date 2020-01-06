@@ -2,7 +2,7 @@
 title: "Abusing Linux Trust Relationships - Thotcon Talk"
 slug: "abusing-linux-trust-relationships-thotcon-slides"
 author: "ropnop"
-draft: true
+draft: false
 date: 2016-05-07
 summary: "Had an awesome time presenting at Thotcon this year. I plan to expand on this topic quite a bit and eventually turn it into a blog posts/series, but in the meantime, here's the slides and the demo video"
 toc: true
