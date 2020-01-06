@@ -1,2 +1,6 @@
 dev/
 .vscode/
+public/
+
+# Local Netlify folder
+.netlify
