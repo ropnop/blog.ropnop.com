@@ -1,0 +1,5 @@
+<figure class="lb image">
+<a href="{{ .Destination | safeURL }}" data-lightbox="{{ .Destination | safeURL }}" {{ with .Title }} data-title="{{ . }}"{{ end }} class="lb">
+<img class="lb" src="{{ .Destination | safeURL }}" {{ with .Title }}alt="{{ . }}"{{ end }}/>
+</a>{{ with .Title }}<figcaption class="figcaption">{{ . }}</figcaption>{{ end }}
+</figure>
