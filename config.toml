@@ -24,6 +24,7 @@ googleAnalytics = "UA-76398957-1"
 
 [taxonomies]
   series = "series"
+  tags = "tags"
 
 [Params]
   homeTitle = "ropnop blog" # Set a different text for the header on the home page
