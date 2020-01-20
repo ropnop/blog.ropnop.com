@@ -1,5 +1,8 @@
-<figure class="lb image">
-<a href="{{ .Destination | safeURL }}" data-lightbox="{{ .Destination | safeURL }}" {{ with .Title }} data-title="{{ . }}"{{ end }} class="lb">
-<img class="lb" src="{{ .Destination | safeURL }}" {{ with .Title }}alt="{{ . }}"{{ end }}/>
-</a>{{ with .Title }}<figcaption class="figcaption">{{ . }}</figcaption>{{ end }}
+<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+<div class="img center">
+    <a href="{{ .Destination | safeURL }}" itemprop="contentUrl">
+    <img itemprop="thumbnail" src="{{ .Destination | safeURL }}" alt="{{ .Text }}" {{ with .Title }} title="{{ . }}"{{end}} />
+    </a>
+</div>
 </figure>
+
