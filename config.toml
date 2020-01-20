@@ -10,8 +10,8 @@ pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
 #pygmentsUseClassic = true
 pygmentOptions = "linenos=inline"
-#disqusShortname = "XXX"
-#googleAnalytics = "XXX"
+#disqusShortname = "ropnopblog"
+#googleAnalytics = "UA-76398957-1"
 
 [markup]
   [markup.tableOfContents]
@@ -35,8 +35,8 @@ pygmentOptions = "linenos=inline"
   commit = false
   rss = true
   comments = true
-  readingTime = true
-  wordCount = true
+  readingTime = false
+  wordCount = false
   useHLJS = true
   socialShare = true
   delayDisqus = true
