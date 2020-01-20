@@ -10,8 +10,8 @@ pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
 #pygmentsUseClassic = true
 pygmentOptions = "linenos=inline"
-#disqusShortname = "ropnopblog"
-#googleAnalytics = "UA-76398957-1"
+disqusShortname = "ropnopblog"
+googleAnalytics = "UA-76398957-1"
 
 [markup]
   [markup.tableOfContents]
