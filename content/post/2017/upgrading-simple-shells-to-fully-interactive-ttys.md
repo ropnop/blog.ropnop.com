@@ -2,7 +2,6 @@
 title: "Upgrading Simple Shells to Fully Interactive TTYs"
 slug: "upgrading-simple-shells-to-fully-interactive-ttys"
 author: "ropnop"
-draft: true
 date: 2017-07-10
 summary: "Catching a reverse shell over netcat is great...until you accidentally Ctrl-C and lose it. These techniques let you upgrade your shell to a proper TTY"
 toc: true

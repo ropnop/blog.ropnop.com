@@ -2,7 +2,6 @@
 title: "Attacking Default Installs of Helm on Kubernetes"
 slug: "attacking-default-installs-of-helm-on-kubernetes"
 author: "ropnop"
-draft: true
 date: 2019-01-28
 summary: "Default installations of Helm on Kubernetes can make it trivial for attackers to escalate to cluster admin. In this post I'll demonstrate how."
 toc: true

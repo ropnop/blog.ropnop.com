@@ -2,7 +2,6 @@
 title: "SANS Holiday Hack 2017 Writeup"
 slug: "sans-holiday-hack-2017-writeup"
 author: "ropnop"
-draft: true
 date: 2018-01-18
 summary: "The SANS team hit another homerun with the HHC including awesome challenges that mimicked real-world pentest activities. Here's my solutions!"
 toc: true

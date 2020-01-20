@@ -1,7 +1,6 @@
 ---
 title: "Configuring Burp Suite With Android Nougat"
 author: "ropnop"
-draft: true
 date: 2018-01-18
 summary: "Android Nougat changed the default behavior for apps, so installing the Burp CA to user certs no longer works. Here's two ways to bypass it"
 toc: true

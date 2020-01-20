@@ -2,7 +2,6 @@
 title: "Configuring a Pretty and Usable Terminal Emulator for WSL"
 slug: "configuring-a-pretty-and-usable-terminal-emulator-for-wsl"
 author: "ropnop"
-draft: true
 date: 2017-09-29
 summary: "I'm a big fan of Bash on Windows (WSL), but was unable to find a good terminal emulator to use. In this post I talk about configuring Terminator for WSL"
 toc: true

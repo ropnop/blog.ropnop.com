@@ -22,7 +22,7 @@ We discovered a URL to a private Docker registry and some plaintext credentials.
 The registry we discovered had the URL of:
 https://registry.example.com/v2 and required Basic authentication.
 
-To view a list of images in the registry, append "\_catalog" to the URL and it will spit out JSON of all the repository and image names:
+To view a list of images in the registry, append "_catalog" to the URL and it will spit out JSON of all the repository and image names:
 https://registry.example.com/v2/_catalog
 
 ![The Docker registry](/images/2016/04/docker_registry-1.jpg)

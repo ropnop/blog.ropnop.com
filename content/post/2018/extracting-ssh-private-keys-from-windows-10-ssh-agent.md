@@ -2,7 +2,6 @@
 title: "Extracting SSH Private Keys From Windows 10 ssh-agent"
 slug: "extracting-ssh-private-keys-from-windows-10-ssh-agent"
 author: "ropnop"
-draft: true
 date: 2018-05-20
 summary: "The newest Windows 10 update includes OpenSSH utilities, including ssh-agent. Here's how to extract unencrypted saved private keys from the registry"
 toc: true

@@ -2,7 +2,6 @@
 title: "Remotely Managing Hyper-V in a Workgroup Environment"
 slug: "remotely-managing-hyper-v-in-a-workgroup-environment"
 author: "ropnop"
-draft: true
 date: 2017-08-01
 summary: "After lots of mucking around, this is the bare minimum configuration I found to successfully connect to and mange Hyper-V in a non-domain network"
 toc: true

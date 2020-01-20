@@ -2,7 +2,6 @@
 title: "Extracting Hashes and Domain Info From ntds.dit"
 slug: "extracting-hashes-and-domain-info-from-ntds-dit"
 author: "ropnop"
-draft: true
 date: 2017-07-06
 summary: "If you end up with a copy of NTDS.dit and the SYSTEM registry hive, you can extract domain computer info offline and user NTLM hashes for cracking."
 toc: true
