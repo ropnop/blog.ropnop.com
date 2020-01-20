@@ -1,0 +1,8 @@
+{{ $img := $.Page.Resources.GetMatch (.Get "name")}}
+{{ if .Get "centered" }} <div class="center">{{end}}
+<figure class="lb {{.Get "class"}}">
+<a href="{{ $img.RelPermalink }}" data-lightbox="{{ $img.RelPermalink }}" data-title="{{ .Get "title" }}" class="lb">
+<img class="lb" src="{{ $img.RelPermalink }}" alt="{{ .Get "title" }}" {{ with .Get "width"}} width="{{.}}" {{ end }} />
+</a><figcaption class="figcaption">{{(.Get "title")}}</figcaption>
+</figure>
+{{ if .Get "centered"  }} </div>{{end}}

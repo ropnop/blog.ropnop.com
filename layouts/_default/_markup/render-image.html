@@ -1,8 +1,7 @@
-<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-<div class="img center">
-    <a href="{{ .Destination | safeURL }}" itemprop="contentUrl">
-    <img itemprop="thumbnail" src="{{ .Destination | safeURL }}" alt="{{ .Text }}" {{ with .Title }} title="{{ . }}"{{end}} />
+<p>
+    <a data-fancybox href="{{ .Destination | safeURL }}" {{with .Title}} data-caption="{{ . }}"{{end}}>
+    <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}" {{ with .Title }} title="{{ . }}"{{end}} />
     </a>
-</div>
-</figure>
+</p>
+
 
