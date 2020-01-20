@@ -666,7 +666,7 @@ Next I looked at the ads server located at http://ads.northpolewonderland.com/
 
 Running it through Burp, I saw a request for a static JS file: 
 
-http://ads.northpolewonderland.com/fedc8e9f69dab9d81a4f227d6ec76567fcb56231.js?meteor\_js\_resource=true
+http://ads.northpolewonderland.com/fedc8e9f69dab9d81a4f227d6ec76567fcb56231.js?meteor_js_resource=true
 
 I had not heard of the [Meteor Framework](https://www.meteor.com/) before, but one of the in-game elves gave some really good hints about it. Specifically, this blogpost about abusing misconfigurations:
 

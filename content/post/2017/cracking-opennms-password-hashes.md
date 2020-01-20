@@ -15,7 +15,7 @@ My Googling failed me and I didn't find any good resources online about OpenNMS 
 
 **tl;dr**. They're base64 encoded strings with the first 16 bytes being the salt, and the remaining 32 bytes being 100,000 iterations of `sha256(salt.password)`. Tool released here:
 
-[https://github.com/ropnop/opennms\_hash\_cracker](https://github.com/ropnop/opennms_hash_cracker)
+[https://github.com/ropnop/opennms_hash_cracker](https://github.com/ropnop/opennms_hash_cracker)
 
 ## Initial Compromise
 
@@ -153,7 +153,7 @@ I really wanted to verify this was the correct algorithm and that I could in fac
 
 Now to test it, I needed to concatenate the bytes of the salt with the plaintext, then calculate a sha256 digest 100,000 times. I wrote a Python script to verify the plaintext and password:
 
-<script src="https://gist.github.com/ropnop/abb60daba012548f7429a288394a23dd.js"></script>
+{{<gist ropnop abb60daba012548f7429a288394a23dd>}}
 
 And testing it with the known plaintext we have success with 100,000 iterations!
 
@@ -169,7 +169,7 @@ Since I still wanted to run some plaintext passwords at the hashes, and I was to
 
 It's on my Github here:
 
-[https://github.com/ropnop/opennms\_hash\_cracker](https://github.com/ropnop/opennms_hash_cracker)
+[https://github.com/ropnop/opennms_hash_cracker](https://github.com/ropnop/opennms_hash_cracker)
 
 The Python script ingests a `users.xml` file, extracts the hashes, and then runs a cracking attack against the hashes using a supplied wordlist.
 
