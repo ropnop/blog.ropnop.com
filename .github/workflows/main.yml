@@ -12,7 +12,7 @@ jobs:
       with:
         submodules: true
     - uses: amondnet/now-deployment@v1
-      if: github.ref == 'refs/heads/master
+      if: github.ref == 'refs/heads/master'
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         zeit-token: ${{secrets.ZEIT_TOKEN}}
