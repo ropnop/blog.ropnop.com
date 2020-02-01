@@ -1,5 +1,5 @@
 {
     "scripts": {
-      "build": "hugo --gc"
+      "build": "hugo --gc -b $BASE_URL"
     }
   }

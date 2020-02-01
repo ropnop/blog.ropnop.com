@@ -1,4 +1,4 @@
-baseURL = "/"
+baseURL = "https://blog.ropnop.com"
 
 DefaultContentLanguage = "en"
 title = "ropnop blog"
