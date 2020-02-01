@@ -22,4 +22,4 @@ jobs:
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         zeit-token: ${{secrets.ZEIT_TOKEN}}
-        now-args: '-b BASE_URL="/"'
+        now-args: "-b BASE_URL=/"
