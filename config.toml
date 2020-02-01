@@ -1,4 +1,5 @@
-baseurl = "/"
+baseURL = "/"
+
 DefaultContentLanguage = "en"
 title = "ropnop blog"
 theme = "beautifulhugo-ropnop"
@@ -43,6 +44,7 @@ googleAnalytics = "UA-76398957-1"
   delayDisqus = true
   showRelatedPosts = true
   hideAuthor = false
+  shareBaseURL = "https://blog.ropnop.com"
 
 
 [Author]
