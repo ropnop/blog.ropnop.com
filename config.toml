@@ -61,6 +61,12 @@ googleAnalytics = "UA-76398957-1"
     weight = 1
 
 [[menu.main]]
+    identifier = "talks"
+    name = "Conference Talks"
+    url = "talk"
+    weight = 2
+
+[[menu.main]]
     name = "Tags"
     url = "tags"
     weight = 3
@@ -68,4 +74,7 @@ googleAnalytics = "UA-76398957-1"
 [[menu.main]]
     name = "Series"
     url = "series"
-    weight = 3
+    weight = 4
+
+
+
