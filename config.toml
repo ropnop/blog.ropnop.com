@@ -5,7 +5,7 @@ title = "ropnop blog"
 theme = "beautifulhugo-ropnop"
 metaDataFormat = "yaml"
 
-pygmentsStyle = "monokai"
+# pygmentsStyle = "manni"
 pygmentsUseClasses = true
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
@@ -39,7 +39,7 @@ googleAnalytics = "UA-76398957-1"
   comments = true
   readingTime = false
   wordCount = false
-  useHLJS = true
+  useHLJS = false
   socialShare = true
   delayDisqus = true
   showRelatedPosts = true
