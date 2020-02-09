@@ -5,12 +5,12 @@ title = "ropnop blog"
 theme = "beautifulhugo-ropnop"
 metaDataFormat = "yaml"
 
-# pygmentsStyle = "manni"
+#pygmentsStyle = "manni"
 pygmentsUseClasses = true
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
 #pygmentsUseClassic = true
-pygmentOptions = "linenos=inline"
+pygmentsOptions = "linenos=table"
 disqusShortname = "ropnopblog"
 googleAnalytics = "UA-76398957-1"
 
