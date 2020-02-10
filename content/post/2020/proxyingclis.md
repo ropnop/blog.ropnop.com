@@ -1,6 +1,7 @@
 ---
-title: "Proxying CLI Tools"
+title: "Proxying CLI Utilities"
 author: "ropnop"
+slug: "proxying-cli-utilities"
 draft: true
 date: 2020-02-09T11:12:51-06:00
 summary: ""
@@ -9,13 +10,16 @@ share_img: ""
 tags: []
 ---
 
-Intercepting HTTP proxies such as Burp Suite or mitmproxy are extremely helpful tools - not just for pentesting and security research but also for development, testing and exploring APIs. I actually find myself using Burp more for debugging and learning than for actual pentesting nowadays. It can be extremely helpful to look "under the hood" at actual HTTP requests being made to make sense of complex APIs or to test that one of my scripts or tools is working correctly.
+# Intro
+Intercepting HTTP proxies such as [Burp Suite](https://portswigger.net/burp) or [mitmproxy](https://mitmproxy.org/) are extremely helpful tools - not just for pentesting and security research but also for development, testing and exploring APIs. I actually find myself using Burp more for debugging and learning than for actual pentesting nowadays. It can be extremely helpful to look "under the hood" at actual HTTP requests being made to make sense of complex APIs or to test that one of my scripts or tools is working correctly.
 
 The general usecase for a tool like for Burp or mitmproxy is to configure a browser to communicate through it, and there are plenty of write-ups and tutorials on how to configure Firefox, Chrome, etc to talk to Burp Suite and to trust the Burp self-signed Certificate Authority.
 
-However, I often want/need to inspect traffic that comes from other tools besides browsers - most notably command line tools. A lot of CLI tools for popular services are just making HTTP requests, and being able to inspect and/or modify this traffic is really valuable. If a CLI tool is not working as expected and the error messages are unhelpful, the problem can become obvious as soon as you look at the actual HTTP requests and resposnes it's making. I have also used these techniques to inspect popular CLI tools like the Azure CLI (`az`), Zeit's `now` utility, and other CLI tools that are provided by popular websites. In the past, I have even proxied the CLI tools provided by a commercial security tool we used and learned about some undocumented APIs and behaviors that were not in their documentation. With this knowledge, I was able to automate certain things that were not possible through their vanilla CLI or the published API docs.
+However, I often want/need to inspect traffic that comes from other tools besides browsers - most notably command line tools. A lot of CLI tools for popular services are just making HTTP requests, and being able to inspect and/or modify this traffic is really valuable. If a CLI tool is not working as expected and the error messages are unhelpful, the problem can become obvious as soon as you look at the actual HTTP requests and resposnes it's making. 
 
-In this post, I want to show various techniques for confifuring different CLI tools written in different languages to proxy their HTTP(S) traffic through Burp Suite - even if the tools themselves are not generally "proxy aware". In general there are two things we must configure:
+I have also used these techniques to inspect popular CLI tools like the Azure CLI (`az`), Zeit's `now` utility, and other CLI tools that are provided by popular websites. In the past, I have even proxied the CLI tools provided by a commercial security tool we used and learned about some undocumented APIs and behaviors that were not in their documentation. With this knowledge, I was able to automate certain things that were not possible through their vanilla CLI or the published API docs.
+
+In this post, I want to show various techniques for confifuring different CLI tools written in different languages to proxy their HTTP(S) traffic through Burp Suite - even if the tools themselves don't offer easy proxy settings. In general there are two things we must configure:
   * Make the CLI proxy traffic to Burp
   * Make the CLI trust the Burp CA (or ignore trust)
 
@@ -65,7 +69,7 @@ http_proxy=localhost:8080 https_proxy=localhost:8080 wget -O /dev/null --no-chec
 And you will see the HTTPS traffic in Burp.
 
 ## Trusting the Proxy Certificate at the OS Level
-For options 2 and 3, we have to export the Burp CA from within Burp. We can download the Burp Certificate in DER format to `~/certs`. We'll also convert it to PEM:
+For options 2, we have to export the Burp CA from within Burp. We can download the Burp Certificate in DER format to `~/certs`. We'll also convert it to PEM:
 
 ```bash
 mkdir ~/certs
@@ -88,7 +92,9 @@ On a Mac, just double cliek the downloaded DER file and OSX will prompt you to a
 
 
 ### Windows
-TODO
+On Windows, double-click on the DER file and select "Install Certificate". Select the "Trusted Root Certification Authorities" certificate store to install and trust the Burp CA.
+
+![trust ca windows](/images/2020/02/windows_install_ca.png)
 
 ### Linux
 For most distros, trusted certificates are in `/usr/share/ca-certificates`. Copy the `burpca.crt` file to `/usr/share/ca-certificates` and then run:
@@ -112,7 +118,7 @@ java -jar acli-9.1.0.jar -s https://greenshot.atlassian.net -a getServerInfo
 Jira version: 1001.0.0-SNAPSHOT, build: 100119, time: 2/6/20, 6:26 AM, description: Greenshot JIRA, url: https://greenshot.atlassian.net
 ```
 
-But how is it doing that? I want to proxy the traffic so I could recreate the API calls manually. Unfortunately, the CLI tool doesn't have any options for specifying a proxy. Thankfully, it's actually pretty straightforward to force the JVM to use a proxy through some properties when launching Java:
+Let's figure out how it's doing that so I can recreate the API calls manually. Unfortunately, the CLI tool doesn't have any options for specifying a proxy. Thankfully, it's actually pretty straightforward to force the JVM to use a proxy through some properties when launching Java:
   * `http.proxyHost`
   * `http.proxyPort`
   * `https.proxyHost`
@@ -132,7 +138,7 @@ But we now get an SSL error!
 Even though I have the Burp certificate trusted in my OS keychain, Java actually uses its own keystore. So we need to add the Burp certificate there also.
 
 ## Adding certificates to Java Keystore
-The default keystore is located in `$JAVA_HOME/lib/security/cacerts`. If `$JAVA_HOME` is not set for you, you can also quickly find it by using `java`:
+The default keystore is located in `$JAVA_HOME/lib/security/cacerts`. If the `$JAVA_HOME` environment variable isn't set for you, you can also quickly find it by using `java`:
 
 ```bash
 java -XshowSettings:properties -version 2>&1 > /dev/null | grep 'java.home'
@@ -175,14 +181,7 @@ $ az group list
   }
 ]
 ```
-Let's intercept this request to figure out the call(s) it's making. First, I want to verify what the `az` command actually does:
-
-```bash
-$ head `which az`
-#!/usr/bin/env bash
-/usr/local/Cellar/azure-cli/2.0.74/libexec/bin/python -m azure.cli "$@"
-```
-So `az` is calling it's own embedded Python intrepreter that was installed with homebrew.
+Let's intercept this request to figure out the call(s) it's making. 
 
 Fortunately, Python will try to honor the "normal" proxy environment variables. However trying to set that results in...the typical SSL error:
 
@@ -196,7 +195,16 @@ Since I have the Burp CA trusted by my OS, Python is not using it.
 ## Adding Certificates to Python
 Python's CA handling is a little strange. Most Python CLI's probably use the [requests](https://requests.readthedocs.io/en/master/) library, which uses it's own CA bundle, and then will also look at the CA bundle included with another library called [certifi](https://pypi.org/project/certifi/), which uses Mozilla's bundle. To trust our CA, we can add it to the Mozilla bundle included with `certifi`.
 
-It's important to note that each Python interpreter get's it's own - so if you are using virtual environments you need to make sure you run the following commands with the correct Python. In my case I already saw that `az` is using `/usr/local/Cellar/azure-cli/2.0.74/libexec/bin/python` so I will use that one
+It's important to note that each Python interpreter get's its own - so if you are using virtual environments you need to make sure you run the following commands with the correct Python. 
+
+First, I want to verify how `az` calls Python and which version it is using:
+
+```bash
+$ head `which az`
+#!/usr/bin/env bash
+/usr/local/Cellar/azure-cli/2.0.74/libexec/bin/python -m azure.cli "$@"
+```
+So `az` is calling its own embedded Python intrepreter that was installed with homebrew at `/usr/local/Cellar/azure-cli/2.0.74/libexec/bin/python`. 
 
 First, to identify where the certificates are loaded from we import `certifi` and run `certifi.where()`
 ```bash
@@ -218,14 +226,14 @@ $ HTTPS_PROXY=http://localhost:8080 az group list
 
 ![az proxy burp](/images/2020/02/az_proxy_burp.png)
 
-And now any other `az` command we want to run we can start viewing/tampering with.
+And now any other `az` command we want to run we can start viewing/tampering with. This has been a lifesaver for me to see "real world" examples of Azure's API I can recreate in my automation scripts.
 
 # Example 4 - Proxying Node JS
 In this example, I wanted to be able to proxy the traffic that comes from the `now` NPM package for interacting with https://zeit.co/. I have already installed the tool with 
 ```bash
 npm i -g now@latest
 ```
-and logged in. I can view my current deployments with:
+After logging in, I can view my current deployments with:
 
 ![now deployments](/images/2020/02/now-deployments.png)
 
@@ -233,7 +241,7 @@ Unfortunately, it appears that Node does not honor the proxy environment variabl
 ```bash
 $ HTTPS_PROXY=http://localhost:8080 now list
 ```
-returns the data as expected, with nothing appearing in Burp. Node does not support a global proxy setting, and there has been long [discussions](https://github.com/nodejs/node/issues/8381) about it. But that doesn't mean we can't hack it.
+returns the data as expected, with nothing appearing in Burp. Unfortunately, Node does not support a global proxy setting, and there has been long [discussions](https://github.com/nodejs/node/issues/8381) about it. But that doesn't mean we can't force one.
 
 First, let's see what the `now` command is calling:
 ```bash
@@ -244,21 +252,22 @@ $ head -c100 `which now`
 #!/usr/bin/env node
 require('./sourcemap-register.js');module.exports=function(e,t){"use strict";var%
 ```
-The `now` utility is one large, ugly, minified JS file located in Node's bin directory with a `node` shebang. We can also run the same `now` command by calling it wich `node` directly:
+The `now` utility is one large, ugly, minified JS file located in Node's bin directory with a `node` shebang. We can also run the same `now` command by calling that file with `node` directly:
 
 ```bash
-$ node `which now` -v
+$ node /Users/RonnieFlathers/.nvm/versions/node/v12.15.0/bin/now -v
 Now CLI 17.0.3
 17.0.3
 ```
 
-While node does not have global proxy support, this is an awsome project called [global-agent](https://github.com/gajus/global-agent) which will set up a configurable proxy in a Node project by simply importing it. To use it, we use npm to install it into our current directory. *Note: you must be on Node 12 or higher*
+While node does not have global proxy support, this is an awsome project called [global-agent](https://github.com/gajus/global-agent) which will set up a configurable proxy in a Node project by simply importing it. To use it, we use npm to install it into our current directory. 
 
 ```bash
 $ mkdir nodeproxy
 $ cd nodproxy/
 $ npm install global-agent
 ```
+*Note: you must be on Node 12 or higher*
 
 The module uses the `GLOBAL_AGENT_HTTP_PROXY` environment variable, so we must export that first. Now from within that directory (because it's where `node_modules` is) we can inject the new requirement into the `now` package:
 
@@ -266,6 +275,7 @@ The module uses the `GLOBAL_AGENT_HTTP_PROXY` environment variable, so we must e
 $ export GLOBAL_AGENT_HTTP_PROXY=http://127.0.0.1:8080
 $ node -r 'global-agent/bootstrap' `which now`
 ```
+Node forces the now client to import `global-agent/bootstrap` which runs automatically. Now the `now` command will proxy requests to the URL set in the environment variable.
 
 Now to add the SSL certificate for Burp.
 
@@ -282,7 +292,9 @@ And it now works! We can view the traffic from the now package in Burp:
 ![node burp requests](/images/2020/02/node_burp_requests.png)
 
 # Example 5 - Proxying Go Binaries
-It is becoming increasingly for developers to distribrute CLIs as static Go binaries. This is, of course, awesome because Go is awesome. Fortunately, proxying Go is really easy since out of the box every Go program understands the environment variables `http_proxy` and `https_proxy`. For this example, I'll proxy Github's [hub](https://hub.github.com/) utility. With `hub` downloaded and installed, in a Git repo I can check on my current CI status like this:
+It is becoming increasingly popular for developers to distribrute CLIs as static Go binaries. This is, of course, awesome because Go is awesome. It's also awesome because proxying Go is actually very easy since out of the box every Go program understands the environment variables `http_proxy` and `https_proxy`. 
+
+For this example, I'll proxy Github's [hub](https://hub.github.com/) utility. With `hub` downloaded and installed, in a Git repo I can check on my current CI status like this:
 
 ```bash
 $ hub ci-status
@@ -314,7 +326,11 @@ success
 
 
 # Conclusion
-These use cases cover 90% of what I ever need to do when it comes to proxying/intercepting traffic from CLI tools. There are edge cases, such as binaries that don't honor proxy settings no matter what you try, or maybe .NET or Ruby CLIs, but maybe I'll save that for a future post. Hope this helps, let me know if you have any questions!
+Hopefully you find this as helpful as I do. Whether you are pentesting an app or CLI, or just developing and wanting to debug - intercepting HTTP traffic is really valuable. I love when I can apply some of my pentesting skills to increase development velocity and be creative.
+
+Python, Node and Go encompass the vast majority of CLI tools I use, but of course there are others. In a future post, I'll cover how to force an invisible proxy onto a process that is not proxy aware at all through layer 4 redirection.
+
+Let me know if you have any questoins or other ideas I missed!
 
 -ropnop
 
