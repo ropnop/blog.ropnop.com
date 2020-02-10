@@ -4,7 +4,7 @@ author: "ropnop"
 slug: "proxying-cli-tools"
 draft: false
 date: 2020-02-09
-summary: "It can be really valuable and informative to proxy and intercept HTTP(S) traffic from CLI tools. In this post I show how to intercept traffic with Burp Suite from Java, Python, Node and Go CLI tools, including trusting the Burp CA"
+summary: "Sometimes you need to intercept traffic from CLI tools. In this post I cover using Burp to intercept traffic from Java, Python, Node and Go CLIs"
 toc: true
 share_img: "/images/2020/02/az_proxy_burp.png"
 tags: ["burp", "proxy", "python", "java", "node", "go"]
