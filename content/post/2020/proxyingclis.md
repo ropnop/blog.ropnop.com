@@ -13,11 +13,11 @@ tags: ["burp", "proxy", "python", "java", "node", "go"]
 # Intro
 Intercepting HTTP proxies such as [Burp Suite](https://portswigger.net/burp) or [mitmproxy](https://mitmproxy.org/) are extremely helpful tools - not just for pentesting and security research but also for development, testing and exploring APIs. I actually find myself using Burp more for debugging and learning than for actual pentesting nowadays. It can be extremely helpful to look "under the hood" at actual HTTP requests being made to make sense of complex APIs or to test that one of my scripts or tools is working correctly.
 
-The general use case for a tool like for Burp or mitmproxy is to configure a browser to communicate through it, and there are plenty of write-ups and tutorials on how to configure Firefox, Chrome, etc to talk to Burp Suite and to trust the Burp self-signed Certificate Authority.
+The general use case for a tool like Burp or mitmproxy is to configure a browser to communicate through it, and there are plenty of write-ups and tutorials on how to configure Firefox, Chrome, etc to talk to Burp Suite and to trust the Burp self-signed Certificate Authority.
 
-However, I often want/need to inspect traffic that comes from other tools besides browsers - most notably command line tools. A lot of CLI tools for popular services are just making HTTP requests, and being able to inspect and/or modify this traffic is really valuable. If a CLI tool is not working as expected and the error messages are unhelpful, the problem can become obvious as soon as you look at the actual HTTP requests and responses it's making. 
+However, I often want/need to inspect traffic that comes from other tools besides browsers - most notably command line tools. A lot of CLI tools for popular services are just making HTTP requests, and being able to inspect and/or modify this traffic is really valuable. If a CLI tool is not working as expected and the error messages are unhelpful, the problem can become obvious as soon as you look at the actual HTTP requests and responses it's making/receiving. 
 
-I have also used these techniques to inspect popular CLI tools like the Azure CLI (`az`), Zeit's `now` utility, and other CLI tools that are provided by popular websites. In the past, I have even proxied the CLI tools provided by a commercial security tool we used and learned about some undocumented APIs and behaviors that were not in their documentation. With this knowledge, I was able to automate certain things that were not possible through their vanilla CLI or the published API docs.
+I have used these techniques to inspect popular CLI tools like the Azure CLI (`az`) and Zeit's `now` utility. In the past, I have even proxied the CLI tools provided by a commercial security tool we used and learned about some undocumented APIs and behaviors that were not in their documentation. With this knowledge, I was able to automate certain things that were not possible through their vanilla CLI or the published API docs.
 
 In this post, I want to show various techniques for configuring different CLI tools written in different languages to proxy their HTTP(S) traffic through Burp Suite - even if the tools themselves don't offer easy proxy settings. In general there are two things we must configure:
   * Make the CLI proxy traffic to Burp
@@ -69,7 +69,7 @@ http_proxy=localhost:8080 https_proxy=localhost:8080 wget -O /dev/null --no-chec
 And you will see the HTTPS traffic in Burp.
 
 ## Trusting the Proxy Certificate at the OS Level
-For options 2, we have to export the Burp CA from within Burp. We can download the Burp Certificate in DER format to `~/certs`. We'll also convert it to PEM:
+For option 2, we have to export the Burp CA from within Burp. We can download the Burp Certificate in DER format to `~/certs`. We'll also convert it to PEM:
 
 ```bash
 mkdir ~/certs
@@ -104,12 +104,12 @@ sudo update-ca-certificates
 ---
 With the Burp CA trusted by your OS, you no longer have to use `-k` with curl or `--no-check-certificates` with wget and you will see HTTPS traffic in Burp:
 ![curl https traffic](/images/2020/02/burp_curl_https.png)
- Trusting the cert at the OS level may seem like overkill for curl and wget (and it is), but it is also the easiest way to proxy CLI tools when you can't disable trust (as we'll see later).
+Trusting the cert at the OS level may seem like overkill for curl and wget (and it is), but it is also the easiest way to proxy CLI tools when you can't disable trust (as we'll see later).
 
 # Example 2 - Proxying Java JARs
-While I would obviously prefer a Python or npm package or a Go binary - a lot of CLI tools I deal with are JARs, including all the CLI utilities for most of my company's security products. Now some of these utilities have proxy support out of the box that can be configured with command line options. However, some of them don't and I need to force the JAR to talk to my proxy. 
+While I would obviously prefer a Python or npm package or a Go binary - a lot of CLI tools I deal with are JARs, including all the CLI utilities for my company's SAST solution. Now some of these utilities have proxy support out of the box that can be configured with command line options, however some of them don't and I need to force the JAR to talk to my proxy. 
 
-A few years go, a security scanner my company was using at the time had a horribly documented API, and the only approved way to interact with it using API tokens was through the Java JAR CLI tool. We needed to scale our automation and wanted to write a Python package for talking with the API, so I used this exact technique to proxy their JAR and figure out how to authenticate with API tokens and what APIs we needed to hit.
+A few years go, a security scanner my company was using at the time had a horribly documented API, and the only approved way to interact with it using API tokens was through their Java JAR CLI tool. We needed to scale our automation and wanted to write a Python package for talking with the API, so I used this exact technique to proxy their JAR and figure out how to authenticate with API tokens and what APIs we needed to hit.
 
 I won't pick on that security vendor here, so instead I will demo on a random [Atlassian CLI](https://bobswift.atlassian.net/wiki/spaces/ACLI/pages/16875586/Downloads) tool I found for talking with Jira. For example, I can use this CLI to query the Jira version running on a random cloud hosted instance:
 
