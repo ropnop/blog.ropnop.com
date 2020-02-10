@@ -1,13 +1,13 @@
 ---
-title: "Proxying CLI Utilities"
+title: "Proxying and Intercepting CLI Tools"
 author: "ropnop"
-slug: "proxying-cli-utilities"
-draft: true
-date: 2020-02-09T11:12:51-06:00
-summary: ""
+slug: "proxying-cli-tools"
+draft: false
+date: 2020-02-09
+summary: "It can be really valuable and informative to proxy and intercept HTTP(S) traffic from CLI tools. In this post I show how to intercept traffic with Burp Suite from Java, Python, Node and Go CLI tools"
 toc: true
-share_img: ""
-tags: []
+share_img: "/images/2020/02/az_proxy_burp.png"
+tags: ["burp", "proxy", "python", "java", "node", "go"]
 ---
 
 # Intro
