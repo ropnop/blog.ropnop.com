@@ -4,7 +4,7 @@ author: "ropnop"
 slug: "proxying-cli-tools"
 draft: false
 date: 2020-02-09
-summary: "It can be really valuable and informative to proxy and intercept HTTP(S) traffic from CLI tools. In this post I show how to intercept traffic with Burp Suite from Java, Python, Node and Go CLI tools"
+summary: "It can be really valuable and informative to proxy and intercept HTTP(S) traffic from CLI tools. In this post I show how to intercept traffic with Burp Suite from Java, Python, Node and Go CLI tools, including trusting the Burp CA"
 toc: true
 share_img: "/images/2020/02/az_proxy_burp.png"
 tags: ["burp", "proxy", "python", "java", "node", "go"]
@@ -86,7 +86,7 @@ Installing and trusting the certificate is very OS dependent.
 
 
 ### Mac OSX
-On a Mac, just double cliek the downloaded DER file and OSX will prompt you to add the cert to the keychain. If you select "System" it will be trusted by all users on the machine. Then after importing it, you must trust it. Search the keychain for "Portswigger" and open up the certificate. Under "Trust" select "Always Trust" for SSL:
+On a Mac, just double click the downloaded DER file and OSX will prompt you to add the cert to the keychain. If you select "System" it will be trusted by all users on the machine. Then after importing it, you must trust it. Search the keychain for "Portswigger" and open up the certificate. Under "Trust" select "Always Trust" for SSL:
 
 ![trust ca osx](/images/2020/02/trust_ca_osx.png)
 
