@@ -125,7 +125,7 @@ Let's figure out how it's doing that so I can recreate the API calls manually. U
   * `https.proxyPort`
   * `http.nonProxyHosts`
 
-To proxy a JAR through Burpsuite, we need to set the first 4 options to our proxy, and ensure the last one is *blank*. This will force Java to proxy all hosts through Burp. We do that by either adding these as command line flags to the `java` command before we specify the JAR: 
+To proxy a JAR through Burpsuite, we need to set the first 4 options to our proxy, and ensure the last one is *blank*. This will force Java to proxy all hosts through Burp. We do that by adding these as command line flags to the `java` command before we specify the JAR: 
 
 ```bash
 java -Dhttp.nonProxyHosts= -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=8080 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=8080 -jar acli-9.1.0.jar -s https://greenshot.atlassian.net -a getServerInfo
@@ -307,13 +307,13 @@ Since `hub` is a Go binary, I simply need to set the environment variable for th
 $ https_proxy=127.0.0.1:8080 hub ci-status
 Error fetching statuses: Get https://api.github.com/repos/ropnop/blog.ropnop.com/commits/89c7759ac344d5a412dc63ce3f053fc3f06d09a0/status: x509: certificate signed by unknown authority
 ```
-And we get an SSL error
+And we get an SSL error.
 
 ## Trusting Certificates with Go
 Unfortunately, Go doesn't have a convenient place to trust an additional CA certificate. For each platform, Go looks in OS dependent places for trusted CAs. You can view these in the source code:
-  * https://golang.org/src/crypto/x509/root_darwin.go
-  * https://golang.org/src/crypto/x509/root_linux.go
-  * https://golang.org/src/crypto/x509/root_windows.go
+  * [Mac](https://golang.org/src/crypto/x509/root_darwin.go)
+  * [Linux](https://golang.org/src/crypto/x509/root_linux.go)
+  * [Windows](https://golang.org/src/crypto/x509/root_windows.go)
 
 This is where you have to add the Burp certificate to your system keychain (as outlined above). After that, Go will pick it up and you can proxy Go binaries just fine:
 
@@ -328,7 +328,7 @@ success
 # Conclusion
 Hopefully you find this as helpful as I do. Whether you are pentesting an app or CLI, or just developing and wanting to debug - intercepting HTTP traffic is really valuable. I love when I can apply some of my pentesting skills to increase development velocity and be creative.
 
-Python, Node and Go encompass the vast majority of CLI tools I use, but of course there are others. In a future post, I'll cover how to force an invisible proxy onto a process that is not proxy aware at all through layer 4 redirection.
+Python, Node and Go encompass the vast majority of CLI tools I use, but of course there are others. In a future post, I'll cover how to force an invisible proxy onto a process that is not proxy aware at all through layer 3 redirection.
 
 Let me know if you have any questions or other ideas I missed!
 
