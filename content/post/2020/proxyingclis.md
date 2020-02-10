@@ -13,13 +13,13 @@ tags: ["burp", "proxy", "python", "java", "node", "go"]
 # Intro
 Intercepting HTTP proxies such as [Burp Suite](https://portswigger.net/burp) or [mitmproxy](https://mitmproxy.org/) are extremely helpful tools - not just for pentesting and security research but also for development, testing and exploring APIs. I actually find myself using Burp more for debugging and learning than for actual pentesting nowadays. It can be extremely helpful to look "under the hood" at actual HTTP requests being made to make sense of complex APIs or to test that one of my scripts or tools is working correctly.
 
-The general usecase for a tool like for Burp or mitmproxy is to configure a browser to communicate through it, and there are plenty of write-ups and tutorials on how to configure Firefox, Chrome, etc to talk to Burp Suite and to trust the Burp self-signed Certificate Authority.
+The general use case for a tool like for Burp or mitmproxy is to configure a browser to communicate through it, and there are plenty of write-ups and tutorials on how to configure Firefox, Chrome, etc to talk to Burp Suite and to trust the Burp self-signed Certificate Authority.
 
-However, I often want/need to inspect traffic that comes from other tools besides browsers - most notably command line tools. A lot of CLI tools for popular services are just making HTTP requests, and being able to inspect and/or modify this traffic is really valuable. If a CLI tool is not working as expected and the error messages are unhelpful, the problem can become obvious as soon as you look at the actual HTTP requests and resposnes it's making. 
+However, I often want/need to inspect traffic that comes from other tools besides browsers - most notably command line tools. A lot of CLI tools for popular services are just making HTTP requests, and being able to inspect and/or modify this traffic is really valuable. If a CLI tool is not working as expected and the error messages are unhelpful, the problem can become obvious as soon as you look at the actual HTTP requests and responses it's making. 
 
 I have also used these techniques to inspect popular CLI tools like the Azure CLI (`az`), Zeit's `now` utility, and other CLI tools that are provided by popular websites. In the past, I have even proxied the CLI tools provided by a commercial security tool we used and learned about some undocumented APIs and behaviors that were not in their documentation. With this knowledge, I was able to automate certain things that were not possible through their vanilla CLI or the published API docs.
 
-In this post, I want to show various techniques for confifuring different CLI tools written in different languages to proxy their HTTP(S) traffic through Burp Suite - even if the tools themselves don't offer easy proxy settings. In general there are two things we must configure:
+In this post, I want to show various techniques for configuring different CLI tools written in different languages to proxy their HTTP(S) traffic through Burp Suite - even if the tools themselves don't offer easy proxy settings. In general there are two things we must configure:
   * Make the CLI proxy traffic to Burp
   * Make the CLI trust the Burp CA (or ignore trust)
 
@@ -43,8 +43,8 @@ wget -O /dev/null ifconfig.io
 
 ## or ##
 
-http_pxoy=localhost:8080 https_proxy=localhost:8080 curl ifconfig.io
-http_pxoy=localhost:8080 https_proxy=localhost:8080 wget -O /dev/null ifconfig.io
+http_proxy=localhost:8080 https_proxy=localhost:8080 curl ifconfig.io
+http_proxy=localhost:8080 https_proxy=localhost:8080 wget -O /dev/null ifconfig.io
 ```
 
 We will see the `curl` and `wget` requests in Burp:
@@ -86,7 +86,7 @@ Installing and trusting the certificate is very OS dependent.
 
 
 ### Mac OSX
-On a Mac, just double click the downloaded DER file and OSX will prompt you to add the cert to the keychain. If you select "System" it will be trusted by all users on the machine. Then after importing it, you must trust it. Search the keychain for "Portswigger" and open up the certificate. Under "Trust" select "Always Trust" for SSL:
+On a Mac, just double click the downloaded DER file and OSX will prompt you to add the cert to the keychain. If you select "System" it will be trusted by all users on the machine. Then after importing it, you must trust it. Search the keychain for "PortSwigger" and open up the certificate. Under "Trust" select "Always Trust" for SSL:
 
 ![trust ca osx](/images/2020/02/trust_ca_osx.png)
 
@@ -162,7 +162,7 @@ Now with the Burp certificate trusted by Java, we can run the same command and s
 There it is! It makes a simple REST call to `/rest/api/latest/serverinfo`. Yes, this is publicly documented and I could have figured it out by RTFM but that's not as fun :)
 
 # Example 3 - Proxying Python Requests
-Moving along, this next example will focus on Python CLIs. Lately I've been using this alot as I've doing quite a bit of Azure automation at work and wanted to peak under the hood of the official `az` CLI. In this example though, I've already installed the Azure CLI using homebrew (`brew install azurecli`) and done an `az login`.
+Moving along, this next example will focus on Python CLIs. Lately I've been using this a lot as I've doing quite a bit of Azure automation at work and wanted to peak under the hood of the official `az` CLI. In this example though, I've already installed the Azure CLI using homebrew (`brew install azurecli`) and done an `az login`.
 
 I can view my available resource groups with:
 ```bash
@@ -204,7 +204,7 @@ $ head `which az`
 #!/usr/bin/env bash
 /usr/local/Cellar/azure-cli/2.0.74/libexec/bin/python -m azure.cli "$@"
 ```
-So `az` is calling its own embedded Python intrepreter that was installed with homebrew at `/usr/local/Cellar/azure-cli/2.0.74/libexec/bin/python`. 
+So `az` is calling its own embedded Python interpreter that was installed with homebrew at `/usr/local/Cellar/azure-cli/2.0.74/libexec/bin/python`. 
 
 First, to identify where the certificates are loaded from we import `certifi` and run `certifi.where()`
 ```bash
@@ -260,7 +260,7 @@ Now CLI 17.0.3
 17.0.3
 ```
 
-While node does not have global proxy support, this is an awsome project called [global-agent](https://github.com/gajus/global-agent) which will set up a configurable proxy in a Node project by simply importing it. To use it, we use npm to install it into our current directory. 
+While node does not have global proxy support, this is an awesome project called [global-agent](https://github.com/gajus/global-agent) which will set up a configurable proxy in a Node project by simply importing it. To use it, we use npm to install it into our current directory. 
 
 ```bash
 $ mkdir nodeproxy
@@ -292,7 +292,7 @@ And it now works! We can view the traffic from the now package in Burp:
 ![node burp requests](/images/2020/02/node_burp_requests.png)
 
 # Example 5 - Proxying Go Binaries
-It is becoming increasingly popular for developers to distribrute CLIs as static Go binaries. This is, of course, awesome because Go is awesome. It's also awesome because proxying Go is actually very easy since out of the box every Go program understands the environment variables `http_proxy` and `https_proxy`. 
+It is becoming increasingly popular for developers to distribute CLIs as static Go binaries. This is, of course, awesome because Go is awesome. It's also awesome because proxying Go is actually very easy since out of the box every Go program understands the environment variables `http_proxy` and `https_proxy`. 
 
 For this example, I'll proxy Github's [hub](https://hub.github.com/) utility. With `hub` downloaded and installed, in a Git repo I can check on my current CI status like this:
 
@@ -330,7 +330,7 @@ Hopefully you find this as helpful as I do. Whether you are pentesting an app or
 
 Python, Node and Go encompass the vast majority of CLI tools I use, but of course there are others. In a future post, I'll cover how to force an invisible proxy onto a process that is not proxy aware at all through layer 4 redirection.
 
-Let me know if you have any questoins or other ideas I missed!
+Let me know if you have any questions or other ideas I missed!
 
 -ropnop
 
