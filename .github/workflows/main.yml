@@ -16,10 +16,10 @@ jobs:
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         zeit-token: ${{secrets.ZEIT_TOKEN}}
-        now-args: "--prod"
+        now-args: "--prod -c"
     - uses: amondnet/now-deployment@v1
       if: github.ref != 'refs/heads/master'
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
         zeit-token: ${{secrets.ZEIT_TOKEN}}
-        now-args: "-b BASE_URL=/"
+        now-args: "-c -b BASE_URL=/"
