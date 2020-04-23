@@ -1,13 +1,13 @@
-—-
-title: “test from an iPad”
-author: “ropnop”
+---
+title: "test from an iPad"
+author: "ropnop"
 draft: false
 date: 2020-04-22
-summary: “”
+summary: "This is a test summary"
 toc: true
-share_img: “”
+share_img: ""
 tags: []
-—-
+---
 
 # Testing
 Hello world
