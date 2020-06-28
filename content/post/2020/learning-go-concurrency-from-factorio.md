@@ -1,11 +1,11 @@
 ---
 title: "Learning Go Concurrency From Factorio"
 author: "ropnop"
-draft: true
+draft: false
 date: 2020-06-28T10:36:39-05:00
 summary: "Go's concurrency model confused me at first, but it finally clicked when I thought of it like building an assembly line in Factorio"
 toc: true
-share_img: ""
+share_img: "/images/2020/06/factorio-1.jpg"
 tags: ["go"]
 ---
 
