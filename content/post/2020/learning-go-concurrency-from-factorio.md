@@ -34,7 +34,7 @@ In Factorio, two of the main components of an assembly line are "inserters" and 
 
 ![factorio inserters](/images/2020/06/inserters_gif.gif)
 
-This is bascially how concurrency works in Go. The inserters are Go routines, and the belts are channels. The inserter on the left is writing to a channel, and the inserter on the right is reading from the channel. In just the same we you can design amazingly efficient factories with just belts and inserters in Factorio, you can write amazingly efficient Go with just Go routines and channels.
+This is bascially how concurrency works in Go. The inserters are Go routines, and the belts are channels. The inserter on the left is writing to a channel, and the inserter on the right is reading from the channel. In just the same way you can design amazingly efficient factories with just belts and inserters in Factorio, you can write amazingly efficient Go with just Go routines and channels.
 
 ## Simple Example
 If we take that simple example above of one belt and two inserters, we can basically express it in Go code with two Go routines (inserters) and a channel (belt)
