@@ -351,6 +351,15 @@ In this case, the XSS impact is very minimal. Just like with an HttpOnly cookie,
 
 ![xss closure](/images/2020/10/xss_closure.png)
 
+*Update - 10/5: Gauntlet thrown down! @coffeetocode demonstrated a [brilliant XSS payload](https://twitter.com/ropnop/status/1312952517634985986) that overwrites the normal `fetch` operation to steal the authorization cookie. I've updated the code to include a protected copy of `fetch` inside the closure:*
+
+```js
+function authModule() {
+    const fetch = window.fetch;
+    //....etc...
+```
+
+*Love the bypasses - keep em coming!*
 
 **Closure Summary**
  * **Pros**
