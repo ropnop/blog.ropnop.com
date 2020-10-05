@@ -1,5 +1,5 @@
 ---
-title: "How to Store Session Tokens in a Browser (both good and bad)"
+title: "How to Store Session Tokens in a Browser (and the impacts of each)"
 author: "ropnop"
 draft: false
 date: 2020-10-03
