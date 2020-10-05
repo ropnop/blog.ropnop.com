@@ -1,11 +1,11 @@
 ---
 title: "How to Store Session Tokens in a Browser (both good and bad)"
 author: "ropnop"
-draft: true
+draft: false
 date: 2020-10-03
 summary: "A commong question when building a SPA is: where do I store my session tokens? I'll talk through the main options and the pros/cons of each"
 toc: true
-share_img: ""
+share_img: "/images/2020/10/xss-localstorage.png"
 tags: ["javascript", "browser", "cookies", "tokens"]
 ---
 
