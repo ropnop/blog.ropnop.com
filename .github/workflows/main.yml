@@ -8,22 +8,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
       with:
         submodules: true
-    - uses: amondnet/now-deployment@v2
+    - uses: amondnet/vercel-action@v19
       if: github.ref == 'refs/heads/master'
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
-        zeit-token: ${{secrets.ZEIT_TOKEN}}
-        now-org-id: ${{secrets.ORG_ID}}
-        now-project-id: ${{secrets.PROJECT_ID}}
-        now-args: "--prod -c"
-    - uses: amondnet/now-deployment@v2
+        vercel-token: ${{secrets.VERCEL_TOKEN}}
+        vercel-org-id: ${{secrets.ORG_ID}}
+        vercel-project-id: ${{secrets.PROJECT_ID}}
+        vercel-args: "--prod -c"
+    - uses: amondnet/vercel-action@v19
       if: github.ref != 'refs/heads/master'
       with:
         github-token: ${{secrets.GITHUB_TOKEN}}
-        zeit-token: ${{secrets.ZEIT_TOKEN}}
-        now-org-id: ${{secrets.ORG_ID}}
-        now-project-id: ${{secrets.PROJECT_ID}}
-        now-args: "-c -b BASE_URL=/"
+        vercel-token: ${{secrets.VERCEL_TOKEN}}
+        vercel-org-id: ${{secrets.ORG_ID}}
+        vercel-project-id: ${{secrets.PROJECT_ID}}
+        vercel-args: "-c -b BASE_URL=/"
